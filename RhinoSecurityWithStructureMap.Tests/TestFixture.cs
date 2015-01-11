@@ -78,11 +78,12 @@ namespace RhinoSecurityWithStructureMap.Tests
             //Clean up database
             using (var trans = _session.BeginTransaction())
             {
-                _authorizationRepository.DetachUserFromGroup(_loggedInUser, "Admin");
                 _authorizationRepository.RemoveOperation("/Content/Create");
                 _authorizationRepository.RemoveOperation("/Content/View");
                 _authorizationRepository.RemoveOperation("/Content/Delete");
                 _authorizationRepository.RemoveOperation("/Content");
+
+                _authorizationRepository.DetachUserFromGroup(_loggedInUser, "Admin");
                 _authorizationRepository.RemoveUsersGroup("Admin");
 
                 _session.Delete(_loggedInUser);

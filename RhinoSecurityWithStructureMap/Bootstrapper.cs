@@ -24,6 +24,7 @@ namespace RhinoSecurityWithStructureMap
                     cfg.For<IAuthorizationRepository>().Use<AuthorizationRepository>();
                     cfg.For<IPermissionsBuilderService>().Use<PermissionsBuilderService>();
                     cfg.For<IPermissionsService>().Use<PermissionsService>();
+                    cfg.For(typeof(IEntityInformationExtractor<>)).Use(typeof(DefaultEntityInformationExtractor<>));
                 });
 
             //Setting up StuctureMapServiceLocator as a CommonServiceLocator that Rhino.Security will use for DI

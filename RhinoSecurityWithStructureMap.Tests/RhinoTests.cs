@@ -12,6 +12,15 @@ namespace RhinoSecurityWithStructureMap.Tests
 {
     public class RhinoTests : IUseFixture<TestFixture>
     {
+        private readonly IAuthorizationService _authorizationService;
+        private readonly User _loggedInUser;
+
+        public RhinoTests() 
+        {
+            _authorizationService = ServiceLocator.Current.GetInstance<IAuthorizationService>();
+            _loggedInUser = TestFixture._loggedInUser;
+        }
+
         public void SetFixture(TestFixture data)
         {
         }
@@ -19,21 +28,21 @@ namespace RhinoSecurityWithStructureMap.Tests
         [Fact]
         public void it_should_allow_content_creation()
         {
-            bool result = TestFixture._authorizationService.IsAllowed(TestFixture._loggedInUser, "/Content/Create");
+            bool result = _authorizationService.IsAllowed(_loggedInUser, "/Content/Create");
             Assert.True(result);
         }
 
         [Fact]
         public void it_should_allow_content_viewing()
         {
-            bool result = TestFixture._authorizationService.IsAllowed(TestFixture._loggedInUser, "/Content/View");
+            bool result = _authorizationService.IsAllowed(_loggedInUser, "/Content/View");
             Assert.True(result);
         }
 
         [Fact]
         public void it_should_deny_content_deletition()
         {
-            bool result = TestFixture._authorizationService.IsAllowed(TestFixture._loggedInUser, "/Content/Delete");
+            bool result = _authorizationService.IsAllowed(_loggedInUser, "/Content/Delete");
             Assert.False(result);
         }
     }

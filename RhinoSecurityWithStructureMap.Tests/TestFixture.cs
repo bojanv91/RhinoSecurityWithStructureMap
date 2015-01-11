@@ -11,12 +11,12 @@ namespace RhinoSecurityWithStructureMap.Tests
 {
     public class TestFixture : IDisposable
     {
-        public static ISessionFactory _sessionFactory;
-        public static ISession _session;
-        public static IAuthorizationRepository _authorizationRepository;
-        public static IAuthorizationService _authorizationService;
-        public static IPermissionsBuilderService _permissionsBuilderService;
-        public static IPermissionsService _permissionService;
+        static ISessionFactory _sessionFactory;
+        static ISession _session;
+        static IAuthorizationRepository _authorizationRepository;
+        static IAuthorizationService _authorizationService;
+        static IPermissionsBuilderService _permissionsBuilderService;
+        static IPermissionsService _permissionService;
         public static User _loggedInUser;
 
         public TestFixture()

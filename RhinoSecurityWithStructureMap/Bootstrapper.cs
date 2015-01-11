@@ -5,7 +5,6 @@ using NHibernate.Cfg;
 using NHibernate.Context;
 using Rhino.Security.Interfaces;
 using Rhino.Security.Services;
-using StructureMap;
 
 namespace RhinoSecurityWithStructureMap
 {
@@ -16,18 +15,18 @@ namespace RhinoSecurityWithStructureMap
             var container = new StructureMap.Container();
             container.Configure(cfg =>
                 {
-                    //NHibernate
+                    //NHibernate configurations 
                     cfg.For<ISessionFactory>().Singleton().Use(() => CreateSessionFactory(connectionString));
                     cfg.For<ISession>().Use(context => GetSession(context));
 
-                    //Rhino Security
+                    //Rhino Security configurations 
                     cfg.For<IAuthorizationService>().Use<AuthorizationService>();
                     cfg.For<IAuthorizationRepository>().Use<AuthorizationRepository>();
                     cfg.For<IPermissionsBuilderService>().Use<PermissionsBuilderService>();
                     cfg.For<IPermissionsService>().Use<PermissionsService>();
                 });
 
-            //Setting up common service locator
+            //Setting up StuctureMapServiceLocator as a CommonServiceLocator that Rhino.Security will use for DI
             Microsoft.Practices.ServiceLocation.ServiceLocator
                 .SetLocatorProvider(() => new StructureMapServiceLocator(container));
         }
@@ -35,27 +34,23 @@ namespace RhinoSecurityWithStructureMap
         private static ISessionFactory CreateSessionFactory(string connectionString)
         {
             FluentConfiguration fluentConfig = Fluently.Configure()
-                .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString))
-                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Bootstrapper>())
-                .CurrentSessionContext(typeof(ThreadStaticSessionContext).AssemblyQualifiedName);
+                .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString))          //specifying connection string for Microsoft SQL Server 2012 
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Bootstrapper>())                  //specifying in which assembly NHibernate should look for entity mappings
+                .CurrentSessionContext(typeof(ThreadStaticSessionContext).AssemblyQualifiedName);   //specifying the session context lifecycle to be initialized per thread
 
-            Configuration config = fluentConfig.BuildConfiguration();
-            RegisterRhinoSecurity(config);
+            NHibernate.Cfg.Configuration config = fluentConfig.BuildConfiguration();    //building the FluentConfiguration to NHibernateConfiguration
+            RegisterRhinoSecurity(config);  //registering RhinoSecurity to NHibernate
 
-            return fluentConfig.BuildSessionFactory();
+            return fluentConfig.BuildSessionFactory();  //building the NHibernate session factory
         }
 
-        private static ISession GetSession(IContext context)
+        private static ISession GetSession(StructureMap.IContext context)
         {
             var sessionFactory = context.GetInstance<ISessionFactory>();
             return sessionFactory.GetCurrentSession();
         }
 
-        /// <summary>
-        /// Registering Rhino.Security infrastructure to NHibernate
-        /// </summary>
-        /// <param name="config"></param>
-        private static void RegisterRhinoSecurity(Configuration config)
+        private static void RegisterRhinoSecurity(NHibernate.Cfg.Configuration config)
         {
             Rhino.Security.Security.Configure<User>(config, Rhino.Security.SecurityTableStructure.Prefix);
         }

@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RhinoSecurityWithStructureMap", "RhinoSecurityWithStructureMap\RhinoSecurityWithStructureMap.csproj", "{4186FCF4-0543-4F75-B225-5B5E3ED6106D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RhinoSecurityWithStructureMap.Tests", "RhinoSecurityWithStructureMap.Tests\RhinoSecurityWithStructureMap.Tests.csproj", "{D7DB1B14-75B1-4822-AF37-4E1AA64CC170}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "RhinoSecurityWithStructureMap.Tests\Tests.csproj", "{D7DB1B14-75B1-4822-AF37-4E1AA64CC170}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A6DE40D7-A5C1-48B0-8154-636C93BD7E99}"
 	ProjectSection(SolutionItems) = preProject

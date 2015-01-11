@@ -21,10 +21,6 @@ namespace RhinoSecurityWithStructureMap.Tests
             _loggedInUser = TestFixture._loggedInUser;
         }
 
-        public void SetFixture(TestFixture data)
-        {
-        }
-
         [Fact]
         public void it_should_allow_content_creation()
         {
@@ -44,6 +40,10 @@ namespace RhinoSecurityWithStructureMap.Tests
         {
             bool result = _authorizationService.IsAllowed(_loggedInUser, "/Content/Delete");
             Assert.False(result);
+        }
+
+        public void SetFixture(TestFixture data)
+        {
         }
     }
 }
